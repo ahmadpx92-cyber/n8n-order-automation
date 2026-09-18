@@ -1,0 +1,96 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c247581a-3f2e-4230-96f4-fdb8e8a56b8e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a8573dc2-be8b-41a2-81a8-97d5483568e6",
+      "name": "Webhook",
+      "webhookId": "c247581a-3f2e-4230-96f4-fdb8e8a56b8e"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = $input.first().json;\n\nreturn {\n    customer_name: inputData.customer_name,\n    product_name: inputData.item_requested,\n    quantity: 1,              // قيمة افتراضية للكمية\n    total_price: inputData.budget // أو السعر الوارد\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "cb8bf191-5e18-4540-b3d1-b8f2f28e9d8d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "=orders\n",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "44ca4c13-dbad-4748-98cd-c591f29cf5b3",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "mzS4Tl2tdWmC2B4Z",
+          "name": "MySQL account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8d06a699-18b0-4361-b23f-7371320cd666",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4f36ac563a38a263445d2b9c9a0cc97f4b8468083f238cd0f1a499c33c2d724e"
+  },
+  "nodeGroups": [],
+  "id": "g4JnwwhO8dRsxdAN",
+  "tags": []
+}
